@@ -34,10 +34,10 @@ export class ConnectServer {
   }
 
   private registerRouter(): void {
+    this.application.app.use('/api', router);
     this.application.app.get('/api/is-alive', (req: Request, res: Response) => {
       return HEALTH_CHECK_ENABLE ? res.status(200).send('OK') : res.status(503).send('Service Unavailable');
     });
-    this.application.app.use('/api', router);
   }
 
   private gracefulShutdown(signal: string): void {
