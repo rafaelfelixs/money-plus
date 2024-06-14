@@ -1,0 +1,441 @@
+openapi: 3.0.3
+info:
+  title: Money+ Api
+  description: |-
+    This is a sample Money+ API.  You can find out more about
+    the project at [Money+ readme](https://github.com/rafaelfelixs/money-plus/blob/main/README.md). 
+    
+    The purpose of this api is to offer a solution for managing financial expenses.  Its uses is for general people and coorporation, since a employee to a small business. This api can be integrated with a front end web application.
+    
+    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
+    
+    Some useful links:
+    - [The Money+ repository](https://github.com/rafaelfelixs/money-plus/tree/main)
+    - [The source API definition for the Money+](https://github.com/especialistadev/projetos-equipes-1/blob/main/app-financeira/README.md)
+    - [Entities Money+](https://docs.google.com/document/d/1omvnr5CJSvQKvgUijUT-PZ3AJsHGHNHmlRXoUIpOP00/edit?usp=sharing)
+
+
+  license:
+    name: MIT License
+    url: https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt
+  version: 1.0.0
+
+servers:
+  - url: https://localhost:3005/api/v1
+tags:
+  - name: users
+    description: Module for managing users of application
+  - name: transactions
+    description: Module for managing transactions of application
+paths:
+  /users:
+    post:
+      tags:
+        - users
+      summary: Add a user to the application
+      description: Add a user to money+
+      operationId: addUser
+      requestBody:
+        description: Create a new user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInsertRequest'
+        required: true
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input. Bad request
+    put:
+      tags:
+        - users
+      summary: Update a user to the application
+      description: Update a user to money+
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: query
+          description: User Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Update a user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input. Bad request
+    get:
+      tags:
+        - users
+      summary: Find a user in the application
+      description: Find a user in money+
+      operationId: findUser
+      parameters:
+        - name: id
+          in: query
+          description: User Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: User found successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input. Bad request
+        '404':
+          description: Resource not found
+    delete:
+      tags:
+        - users
+      summary: Delete a user in the application
+      description: Delete a user in money+
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: query
+          description: User Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: User deleted successfully
+        '400':
+          description: Invalid input. Bad request
+        '404':
+          description: Resource not found
+
+  /users/list:
+    get:
+      tags:
+        - users
+      summary: List all users in the application
+      description: List all users in money+
+      operationId: listUsers
+      responses:
+        '200':
+          description: User found successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUsers'
+        '400':
+          description: Invalid input. Bad request
+        '404':
+          description: Resource not found
+
+  /transactions:
+    post:
+      tags:
+        - transactions
+      summary: Add a transaction to the application
+      description: Add a transaction to money+
+      operationId: addTransaction
+      requestBody:
+        description: Create a new transaction
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionInsertRequest'
+        required: true
+      responses:
+        '201':
+          description: Transaction created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Invalid input. Bad request
+    put:
+      tags:
+        - transactions
+      summary: Update a transaction in the application
+      description: Update a transaction in money+
+      operationId: updateTransaction
+      parameters:
+        - name: id
+          in: query
+          description: Transaction Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Update a transaction
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: Transaction update successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Invalid input. Bad request
+    get:
+      tags:
+        - transactions
+      summary: Find a transaction in the application
+      description: Find a transaction in money+
+      operationId: findTransaction
+      parameters:
+        - name: id
+          in: query
+          description: Transaction Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Transaction found successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Invalid input. Bad request
+    delete:
+      tags:
+        - transactions
+      summary: Delete a transaction in the application
+      description: Delete a transaction in money+
+      operationId: deleteTransaction
+      parameters:
+        - name: id
+          in: query
+          description: Transaction Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Transaction deleted successfully
+        '400':
+          description: Invalid input. Bad request
+
+  /transaction/list:
+    get:
+      tags:
+        - transactions
+      summary: List all transactions of an user in the application
+      description: List all transactions of an user in money+
+      operationId: listTransactions
+      parameters:
+        - name: userId
+          in: query
+          description: User Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Transaction found successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTransactions'
+        '400':
+          description: Invalid input. Bad request
+        '404':
+          description: Resource not found
+
+components:
+  schemas:
+    UserInsertRequest:
+      type: object
+      required:
+        - userName
+      properties:
+        userName:
+          type: string
+          example: "Jeff Bezos"
+        email:
+          type: string
+          example: "jeff.bezos@amazon.com.br"
+        password:
+          type: string
+          example: "Jeff@123"
+
+    UserUpdateRequest:
+      type: object
+      properties:
+        userName:
+          type: string
+          example: "Jeff Bezos"
+        password:
+          type: string
+          example: "Jeff@123"
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userName:
+          type: string
+          description: User name identifier
+          example: "Jeff Bezos"
+        email:
+          type: string
+          description: User email. Should be unique
+          example: "jeff.bezos@amazon.com.br"
+        password:
+          type: string
+          description: User password
+          example: "Jeff@123"
+        createdAt:
+          type: string
+          description: Date when the transaction was created.
+          format: date-time
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+
+    ListUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        description:
+          type: string
+          description: Transaction description
+          example: "Grocery"
+        type:
+          type: string
+          description: Type of the transaction.
+          enum: ["CREDIT", "DEBIT"]
+          example: "DEBIT"
+        amount:
+          type: number
+          description: Amount of the transaction
+          example: 123.45
+        status:
+          type: string
+          description: Status of the transaction.
+          enum: ["PENDENT", "DONE", "CANCELED"]
+          example: "DONE"
+        registeredAt:
+          type: string
+          description: Date when the transaction turnet into Done status.
+          format: date-time
+        createdAt:
+          type: string
+          description: Date when the transaction was created.
+          format: date-time
+        userId:
+          type: string
+          format: uuid
+
+    ListTransactions:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userName:
+          type: string
+          description: User name identifier
+          example: "Jeff Bezos"
+        email:
+          type: string
+          description: User email. Should be unique
+          example: "jeff.bezos@amazon.com.br"
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+
+    TransactionInsertRequest:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Transaction description
+          example: "Grocery"
+        type:
+          type: string
+          description: Type of the transaction.
+          enum: ["CREDIT", "DEBIT"]
+          example: "DEBIT"
+        amount:
+          type: number
+          description: Amount of the transaction
+          example: 123.45
+        status:
+          type: string
+          description: Status of the transaction.
+          enum: ["PENDENT", "DONE", "CANCELED"]
+          example: "DONE"
+        registeredAt:
+          type: string
+          description: Date when the transaction turnet into Done status.
+          format: date-time
+        userId:
+          type: string
+          format: uuid
+
+    TransactionUpdateRequest:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Transaction description
+          example: "Grocery"
+        type:
+          type: string
+          description: Type of the transaction.
+          enum: ["CREDIT", "DEBIT"]
+          example: "DEBIT"
+        amount:
+          type: number
+          description: Amount of the transaction
+          example: 123.45
+        status:
+          type: string
+          description: Status of the transaction.
+          enum: ["PENDENT", "DONE", "CANCELED"]
+          example: "DONE"
+        registeredAt:
+          type: string
+          description: Date when the transaction turnet into Done status.
+          format: date-time
+
