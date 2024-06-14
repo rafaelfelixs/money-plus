@@ -1,6 +1,22 @@
-version: '3.7'
+version: '3.9'
 
 services:
+  postgres:
+    container_name: api-money-plus-postgres
+    image: postgres:14-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: money_plus_db
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+    networks:
+      - net_api_money_plus
+
+
   api-money-plus:
     container_name: api-money-plus
     image: node:18-alpine3.20
@@ -8,6 +24,8 @@ services:
     ports:
       - "3005:3005"
       - "9229:9229"
+    depends_on:
+      - postgres
     volumes:
       - ./app:/application
     env_file:
@@ -15,6 +33,7 @@ services:
     networks:
       - net_api_money_plus
     command: [ "yarn", "dev" ]
+
 
 networks:
   net_api_money_plus:
