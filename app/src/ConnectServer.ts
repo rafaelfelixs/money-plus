@@ -1,6 +1,9 @@
 import * as http from 'http';
 import { Request, Response } from 'express';
 import { App } from './App';
+import * as dotenv from 'dotenv'
+
+dotenv.config();
 
 const GRACEFUL_SHUTDOWN_TIME = 63 * 1000; /*Wait 63s*/
 let HEALTH_CHECK_ENABLE = true;
@@ -17,10 +20,6 @@ export class ConnectServer {
 
     this.server = http.createServer(this.application.app);
 
-    /* Configuration based on ELB AWS 60s
-     *  keepAliveTimeout > ELB AWS
-     *  headersTimeout > keepAliveTimeout
-     * */
     this.server.keepAliveTimeout = 61 * 1000;
     this.server.headersTimeout = 62 * 1000;
     this.server.maxHeadersCount = 0;
