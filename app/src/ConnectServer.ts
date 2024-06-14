@@ -1,8 +1,8 @@
 import * as http from 'http';
 import { Request, Response } from 'express';
 import { App } from './App';
-import * as dotenv from 'dotenv'
-import {router} from "./Core/Manifest/Routes";
+import * as dotenv from 'dotenv';
+import { router } from './Core/Manifest/Routes';
 
 dotenv.config();
 
