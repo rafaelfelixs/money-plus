@@ -23,7 +23,7 @@ A functional and complete system for managing financial expenses. It may be used
 * To start project using docker use the commands
 
   | COMMAND | DESCRIPTION |
-  | ---  | --- |
+    | ---  | --- |
   | make build  | Build docker |
   | make dev  | Execute application in mode development |
 
@@ -38,4 +38,5 @@ Javascript, Typescript, Docker, Express
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
+![Logo](https://www.ledgerinsights.com/wp-content/uploads/2019/10/digital-currency-dollar.2-810x476.jpg)
 
