@@ -23,7 +23,7 @@ A functional and complete system for managing financial expenses. It may be used
 * To start project using docker use the commands
 
   | COMMAND | DESCRIPTION |
-      | ---  | --- |
+  | ---  | --- |
   | make build  | Build docker |
   | make dev  | Execute application in mode development |
 
