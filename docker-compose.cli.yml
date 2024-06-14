@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+    yarn:
+      user: root
+      image: node:18-alpine3.20
+      volumes:
+        - ./app:/application
+      env_file:
+        - .env
+      networks:
+        - net_api_money_plus
+      entrypoint: yarn
+
+networks:
+  net_api_money_plus:
+    external: true
