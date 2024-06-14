@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["es2023"],
+    "module": "node16",
+    "outDir": "build",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node16",
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "incremental": true
+  },
+  "include": ["**/**/*"],
+  "exclude": [".git", "build", "tests", "node_modules"]
+}
