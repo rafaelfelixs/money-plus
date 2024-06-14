@@ -2,6 +2,7 @@ import * as http from 'http';
 import { Request, Response } from 'express';
 import { App } from './App';
 import * as dotenv from 'dotenv'
+import {router} from "./Core/Manifest/Routes";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ export class ConnectServer {
     this.application.app.get('/api/is-alive', (req: Request, res: Response) => {
       return HEALTH_CHECK_ENABLE ? res.status(200).send('OK') : res.status(503).send('Service Unavailable');
     });
+    this.application.app.use('/api', router);
   }
 
   private gracefulShutdown(signal: string): void {
