@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { App } from './App';
 import * as dotenv from 'dotenv';
 import { router } from './Core/Manifest/Routes';
+import { logger, loggerError, loggerErrorUncaughtException } from './Api/Utils/Logger';
 
 dotenv.config();
 
@@ -29,7 +30,7 @@ export class ConnectServer {
   public startServer(): void {
     this.server.listen(this.port);
     this.server.on('error', this.onError);
-    this.server.on('listening', () => console.log(`Server listing port ${this.port}`));
+    this.server.on('listening', () => logger.info(`Server listing port ${this.port}`));
     this.processSignal();
   }
 
@@ -42,9 +43,9 @@ export class ConnectServer {
 
   private gracefulShutdown(signal: string): void {
     HEALTH_CHECK_ENABLE = false;
-    console.log(`Graceful shutdown application: ${signal} signal received.`);
+    logger.info(`Graceful shutdown application: ${signal} signal received.`);
     this.server.close(() => {
-      console.log(`Server http closed. Waiting ${GRACEFUL_SHUTDOWN_TIME}ms for closing...`);
+      logger.info(`Server http closed. Waiting ${GRACEFUL_SHUTDOWN_TIME}ms for closing...`);
       setTimeout(() => {
         process.exit(1);
       }, GRACEFUL_SHUTDOWN_TIME);
@@ -54,19 +55,19 @@ export class ConnectServer {
   private processSignal(): void {
     if (process.env.NODE_ENV === 'production') {
       process.on('uncaughtException', (error: Error) => {
-        console.log(error);
+        loggerErrorUncaughtException(error);
         this.gracefulShutdown('SIGTERM');
       });
 
       process.on('unhandledRejection', (error: Error) => {
-        console.log(error);
+        loggerErrorUncaughtException(error);
         this.gracefulShutdown('SIGTERM');
       });
 
       process.on('SIGTERM', () => this.gracefulShutdown('SIGTERM'));
 
       process.on('exit', () => {
-        console.log('Server application finished!');
+        logger.info('Server application finished!');
       });
     }
   }
@@ -79,7 +80,7 @@ export class ConnectServer {
 
   private static validateEnvironment(): void {
     if (!process.env.NODE_ENV) {
-      console.log('NODE_ENV is undefined');
+      loggerError(new Error('NODE_ENV is undefined'));
       process.exit(1);
     }
   }
@@ -89,10 +90,10 @@ export class ConnectServer {
     const bind = typeof this.port === 'string' ? 'Pipe ' + this.port : 'Port ' + this.port;
     switch (error.code) {
       case 'EACCES':
-        console.log(`${bind} requires elevated privileges`);
+        loggerError(new Error(`${bind} requires elevated privileges`));
         break;
       case 'EADDRINUSE':
-        console.log(`${bind} is already in use`);
+        loggerError(new Error(`${bind} is already in use`));
         break;
       default:
         throw error;

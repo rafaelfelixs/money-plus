@@ -2,6 +2,7 @@ import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
+import { logMiddleware } from './Api/Middleware/RegisterLoggerMiddleware';
 
 export class App {
   constructor() {
@@ -17,5 +18,6 @@ export class App {
     this.app.use(cors());
     this.app.use(helmet());
     this.app.use(compression());
+    this.app.use(logMiddleware);
   }
 }
